@@ -19,8 +19,10 @@ precompile(Tuple{typeof(Base.stale_cachefile), String, String})
 precompile(Tuple{typeof(push!), Set{Module}, Module})
 precompile(Tuple{typeof(push!), Set{Method}, Method})
 precompile(Tuple{typeof(push!), Set{Base.PkgId}, Base.PkgId})
+@assert precompile(Tuple{typeof(getindex),  Dict{Base.PkgId,String}, Base.PkgId})
 precompile(Tuple{typeof(setindex!), Dict{String,Base.PkgId}, Base.PkgId, String})
 precompile(Tuple{typeof(get!), Type{Vector{Function}}, Dict{Base.PkgId,Vector{Function}}, Base.PkgId})
+@assert precompile(Tuple{typeof(Base.parse_cache_header), String})
 """
 
 precompile_script = """
