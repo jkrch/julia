@@ -387,8 +387,8 @@ try
     cachefile = joinpath(cachedir, "$UsesB_module.ji")
     modules, (deps, requires), required_modules = Base.parse_cache_header(cachefile)
     id1, id2 = only(requires)
-    @test Base.pkgcachefiles[id1] == cachefile
-    @test Base.pkgcachefiles[id2] == joinpath(cachedir, "$B_module.ji")
+    @test Base.pkgorigins[id1].cachepath == cachefile
+    @test Base.pkgorigins[id2].cachepath == joinpath(cachedir, "$B_module.ji")
 
     Baz_file = joinpath(dir, "Baz.jl")
     write(Baz_file,

@@ -813,13 +813,18 @@ function require(into::Module, mod::Symbol)
     return require(uuidkey, cache)
 end
 
-const pkgcachefiles = Dict{PkgId,String}()
+struct PkgOrigin
+    # version::VersionNumber
+    # path::String
+    cachepath::Union{String,Nothing}
+end
+const pkgorigins = Dict{PkgId,PkgOrigin}()
 
 function require(uuidkey::PkgId, cache::TOMLCache=TOMLCache())
     if !root_module_exists(uuidkey)
         cachefile = _require(uuidkey, cache)
         if cachefile !== nothing
-            pkgcachefiles[uuidkey] = cachefile
+            pkgorigins[uuidkey] = PkgOrigin(cachefile)
         end
         # After successfully loading, notify downstream consumers
         for callback in package_callbacks
@@ -1480,7 +1485,7 @@ function stale_cachefile(modpath::String, cachefile::String, cache::TOMLCache)
         end
 
         if isa(id, PkgId)
-            pkgcachefiles[id] = cachefile
+            pkgorigins[id] = PkgOrigin(cachefile)
         end
 
         return depmods # fresh cachefile
