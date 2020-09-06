@@ -348,13 +348,13 @@ try
     write(Nest_file,
         """
         module $Nest_module
-        include("$NestInner_file")
+        include("$(escape_string(NestInner_file))")
         end
         """)
     write(NestInner_file,
         """
         module NestInner
-        include("$NestInner2_file")
+        include("$(escape_string(NestInner2_file))")
         end
         """)
     write(NestInner2_file,
