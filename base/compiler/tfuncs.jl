@@ -761,7 +761,13 @@ function getfield_tfunc(@nospecialize(s00), @nospecialize(name))
                     t === nothing || return t
                 end
             elseif isa(sv, Core.TypeName)
-                fld = isa(nv, Symbol) ? fieldindex(Core.TypeName, nv, false) : nv
+                fld = if isa(nv, Symbol)
+                    fieldindex(Core.TypeName, nv, false)
+                elseif isa(nv, Int)
+                    nv
+                else
+                    return Bottom
+                end
                 if (fld == TYPENAME_NAME_FIELDINDEX ||
                     fld == TYPENAME_MODULE_FIELDINDEX ||
                     fld == TYPENAME_WRAPPER_FIELDINDEX)
